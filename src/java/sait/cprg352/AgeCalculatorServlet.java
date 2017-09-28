@@ -31,19 +31,28 @@ public class AgeCalculatorServlet extends HttpServlet {
             throws ServletException, IOException {
         String age = request.getParameter("age");
         String message;
-        if(!age.equals(""))
-        {
-            int actualAge = Integer.parseInt(age);
-            actualAge++;
-            message = ("Your age on your next birthday is " + actualAge);
-            
+        try
+            {
+            if(!age.equals(""))
+            {
+                int actualAge = Integer.parseInt(age);
+                actualAge++;
+                message = ("Your age on your next birthday is " + actualAge);
+
+            }
+            else
+            {
+                message = "You must enter your birthday!";
+            }
+
+            request.setAttribute("yourage", message);
         }
-        else
+        catch(Exception e)
         {
-            message = "You must enter your birthday!";
+            message = "You must enter a number";
+            request.setAttribute("yourage", message);
+            request.setAttribute("incorrect", age);
         }
-        
-        request.setAttribute("yourage", message);
         getServletContext().getRequestDispatcher("/WEB-INF/ageCalculator.jsp").forward(request,response);
     }
 
